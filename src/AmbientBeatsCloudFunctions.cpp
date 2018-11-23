@@ -27,10 +27,10 @@ void AmbientBeatsCloudFunctions::setupCloudModeFunctions() {
     Particle.function("power-off", std::bind(&AmbientBeatsCloudFunctions::powerOff, this, std::placeholders::_1));
     Particle.function("pause", std::bind(&AmbientBeatsCloudFunctions::pause, this, std::placeholders::_1));
 
-    Particle.variable("hue",&ledAnimations->currentHue, INT);
-    Particle.variable("brightness", &ledAnimations->currentBrightness, INT);
-    Particle.variable("saturation", &ledAnimations->currentSaturation, INT);
-    Particle.variable("animation", &ledAnimations->currentAnimation, INT);
+    Particle.variable("hue",&ledAnimations->hue, INT);
+    Particle.variable("brightness", &ledAnimations->brightness, INT);
+    Particle.variable("saturation", &ledAnimations->saturation, INT);
+    Particle.variable("animation", &ledAnimations->animation, INT);
 
     Particle.subscribe("NEXT_MODE", std::bind(&AmbientBeatsCloudFunctions::handleNextAnimation, this, std::placeholders::_1, std::placeholders::_2));
     Particle.subscribe("PREVIOUS_MODE", std::bind(&AmbientBeatsCloudFunctions::handlePreviousAnimation, this, std::placeholders::_1, std::placeholders::_2));
@@ -79,9 +79,9 @@ int AmbientBeatsCloudFunctions::toggleAudioReactive(String arg) {
 }
 
 int AmbientBeatsCloudFunctions::nextAnimation(String arg) {
-    int currentAnimation = ledAnimations->nextAnimation();
-    Particle.publish("Animation #", String(currentAnimation));
-    return currentAnimation;
+    int animation = ledAnimations->nextAnimation();
+    Particle.publish("Animation #", String(animation));
+    return animation;
 }
 
 void AmbientBeatsCloudFunctions::handleNextAnimation(const char *eventName, const char *data) {
@@ -89,9 +89,9 @@ void AmbientBeatsCloudFunctions::handleNextAnimation(const char *eventName, cons
 }
 
 int AmbientBeatsCloudFunctions::previousAnimation(String arg) {
-    int currentAnimation = ledAnimations->previousAnimation();
-    Particle.publish("Animation #", String(currentAnimation));
-    return currentAnimation;
+    int animation = ledAnimations->previousAnimation();
+    Particle.publish("Animation #", String(animation));
+    return animation;
 }
 
 void AmbientBeatsCloudFunctions::handlePreviousAnimation(const char *eventName, const char *data) {
@@ -99,9 +99,9 @@ void AmbientBeatsCloudFunctions::handlePreviousAnimation(const char *eventName, 
 }
 
 int AmbientBeatsCloudFunctions::setAnimation(String animationNumber) {
-    int currentAnimation = ledAnimations->setAnimation(animationNumber.toInt());
-    Particle.publish("Animation #", String(currentAnimation));
-    return currentAnimation;
+    int animation = ledAnimations->setAnimation(animationNumber.toInt());
+    Particle.publish("Animation #", String(animation));
+    return animation;
 }
 
 int AmbientBeatsCloudFunctions::nextFrequency(String frequency) {
@@ -142,33 +142,33 @@ int AmbientBeatsCloudFunctions::setColor(String rgbString) {
     CRGB rgb = CRGB(r.toInt(),g.toInt(),b.toInt());
     CHSV hsv = rgb2hsv_approximate(rgb);
 
-    ledAnimations->currentHue = hsv.hue;
+    ledAnimations->hue = hsv.hue;
 
     return hsv.hue;
 }
 
 int AmbientBeatsCloudFunctions::setHue(String newHue) {
-    ledAnimations->currentHue = newHue.toInt();
+    ledAnimations->setHue(newHue.toInt());
 
-    return ledAnimations->currentHue;
+    return ledAnimations->hue;
 }
 
-int AmbientBeatsCloudFunctions::setSaturation(String saturationString) {
-    ledAnimations->setCurrentSaturation(saturationString.toInt());
+int AmbientBeatsCloudFunctions::setSaturation(String newSaturation) {
+    ledAnimations->setSaturation(newSaturation.toInt());
 
-    return 1;
+    return ledAnimations->saturation;
 }
 
-int AmbientBeatsCloudFunctions::setBrightness(String brightnessString) {
-    ledAnimations->setCurrentBrightness(brightnessString.toInt());
+int AmbientBeatsCloudFunctions::setBrightness(String newBrightness) {
+    ledAnimations->setBrightness(newBrightness.toInt());
 
-    return 1;
+    return ledAnimations->brightness;
 }
 
-int AmbientBeatsCloudFunctions::setSensitivity(String sensitivity) {
-    ledAnimations->globalSensitivity = sensitivity.toInt();
+int AmbientBeatsCloudFunctions::setSensitivity(String newSensitivity) {
+    ledAnimations->setSensitivity(newSensitivity.toInt());
 
-    return sensitivity.toInt();
+    return ledAnimations->sensitivity;
 }
 
 #endif
