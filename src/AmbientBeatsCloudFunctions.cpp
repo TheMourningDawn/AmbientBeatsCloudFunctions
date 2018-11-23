@@ -10,35 +10,31 @@ AmbientBeatsCloudFunctions::AmbientBeatsCloudFunctions(LEDAnimations *animations
 void AmbientBeatsCloudFunctions::setupCloudModeFunctions() {
     // Up to 15 cloud functions may be registered and each function name is limited to a maximum of 12 characters.
     Particle.function("toggle-audio-reactive",  std::bind(&AmbientBeatsCloudFunctions::toggleAudioReactive, this, std::placeholders::_1));
-
     Particle.function("next-animation", std::bind(&AmbientBeatsCloudFunctions::nextAnimation, this, std::placeholders::_1));
     Particle.function("previous-animation", std::bind(&AmbientBeatsCloudFunctions::previousAnimation, this, std::placeholders::_1));
     Particle.function("set-animation", std::bind(&AmbientBeatsCloudFunctions::setAnimation, this, std::placeholders::_1));
-
     Particle.function("cycle-frequency", std::bind(&AmbientBeatsCloudFunctions::nextFrequency, this, std::placeholders::_1));
 
-    Particle.function("set-color", std::bind(&AmbientBeatsCloudFunctions::setColor, this, std::placeholders::_1));
     Particle.function("set-hue", std::bind(&AmbientBeatsCloudFunctions::setHue, this, std::placeholders::_1));
+    Particle.function("set-color", std::bind(&AmbientBeatsCloudFunctions::setColor, this, std::placeholders::_1));
     Particle.function("set-saturation", std::bind(&AmbientBeatsCloudFunctions::setSaturation, this, std::placeholders::_1));
     Particle.function("set-brightness", std::bind(&AmbientBeatsCloudFunctions::setBrightness, this, std::placeholders::_1));
     Particle.function("set-sensitivity", std::bind(&AmbientBeatsCloudFunctions::setSensitivity, this, std::placeholders::_1));
 
     Particle.function("reset-device",std::bind(&AmbientBeatsCloudFunctions::resetDevice, this, std::placeholders::_1));
-
     Particle.function("enter-safe-mode", std::bind(&AmbientBeatsCloudFunctions::enterSafeMode, this, std::placeholders::_1));
-
     Particle.function("power-on", std::bind(&AmbientBeatsCloudFunctions::powerOn, this, std::placeholders::_1));
     Particle.function("power-off", std::bind(&AmbientBeatsCloudFunctions::powerOff, this, std::placeholders::_1));
     Particle.function("pause", std::bind(&AmbientBeatsCloudFunctions::pause, this, std::placeholders::_1));
 
-//    Particle.variable("current-hue", &LEDAnimations::currentHue, INT);
-//    Particle.variable("current-brightness", &LEDAnimations::currentBrightness, INT);
-//    Particle.variable("current-saturation", &LEDAnimations::currentSaturation, INT);
-//    Particle.variable("current-animation", &LEDAnimations::currentAnimation, INT);
+    Particle.variable("hue",&ledAnimations->currentHue, INT);
+    Particle.variable("brightness", &ledAnimations->currentBrightness, INT);
+    Particle.variable("saturation", &ledAnimations->currentSaturation, INT);
+    Particle.variable("animation", &ledAnimations->currentAnimation, INT);
 
-//    Particle.subscribe("NEXT_MODE", &AmbientBeatsCloudFunctions::handleNextAnimation);
-//    Particle.subscribe("PREVIOUS_MODE", &AmbientBeatsCloudFunctions::handlePreviousAnimation);
-//    Particle.subscribe("RESET", &AmbientBeatsCloudFunctions::handleReset);
+    Particle.subscribe("NEXT_MODE", std::bind(&AmbientBeatsCloudFunctions::handleNextAnimation, this, std::placeholders::_1, std::placeholders::_2));
+    Particle.subscribe("PREVIOUS_MODE", std::bind(&AmbientBeatsCloudFunctions::handlePreviousAnimation, this, std::placeholders::_1, std::placeholders::_2));
+    Particle.subscribe("RESET", std::bind(&AmbientBeatsCloudFunctions::handleReset, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 int AmbientBeatsCloudFunctions::resetDevice(String arg) {
@@ -58,22 +54,22 @@ int AmbientBeatsCloudFunctions::enterSafeMode(String arg) {
 }
 
 int AmbientBeatsCloudFunctions::powerOn(String arg) {
-//    poweredOn = true;
+    ledAnimations->poweredOn = true;
 
     return 1;
 }
 
 int AmbientBeatsCloudFunctions::powerOff(String arg) {
-//    poweredOn = false;
+    ledAnimations->poweredOn = false;
 
-//    animations->clearAllLeds();
-//    FastLED.show();
+    ledAnimations->clearAllLeds();
+    FastLED.show();
 
     return 1;
 }
 
 int AmbientBeatsCloudFunctions::pause(String arg) {
-//    poweredOn = !poweredOn;
+    ledAnimations->poweredOn = !ledAnimations->poweredOn;
 
     return 1;
 }
