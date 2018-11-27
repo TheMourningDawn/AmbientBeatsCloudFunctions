@@ -27,7 +27,7 @@ void AmbientBeatsCloudFunctions::setupCloudModeFunctions() {
     Particle.function("power-off", std::bind(&AmbientBeatsCloudFunctions::powerOff, this, std::placeholders::_1));
     Particle.function("pause", std::bind(&AmbientBeatsCloudFunctions::pause, this, std::placeholders::_1));
 
-    Particle.variable("hue",&ledAnimations->hue, INT);
+    Particle.variable("hue", &ledAnimations->hue, INT);
     Particle.variable("brightness", &ledAnimations->brightness, INT);
     Particle.variable("saturation", &ledAnimations->saturation, INT);
     Particle.variable("animation", &ledAnimations->animation, INT);
@@ -71,7 +71,11 @@ int AmbientBeatsCloudFunctions::powerOff(String arg) {
 int AmbientBeatsCloudFunctions::pause(String arg) {
     ledAnimations->poweredOn = !ledAnimations->poweredOn;
 
-    return 1;
+    if(ledAnimations) {
+      return 1;
+    }
+
+    return 0;
 }
 
 int AmbientBeatsCloudFunctions::toggleAudioReactive(String arg) {
@@ -143,6 +147,8 @@ int AmbientBeatsCloudFunctions::setColor(String rgbString) {
     CHSV hsv = rgb2hsv_approximate(rgb);
 
     ledAnimations->hue = hsv.hue;
+    ledAnimations->saturation = hsv.sat;
+    ledAnimations->brightness = hsv.val;
 
     return hsv.hue;
 }
