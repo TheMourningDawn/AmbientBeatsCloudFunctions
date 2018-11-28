@@ -34,9 +34,10 @@ class AmbientBeatsCloudFunctions
         int setSensitivity(String sensitivity);
 
         // Handlers for particle cloud events
-        void handleReset(const char *eventName, const char *data);
-        void handleNextAnimation(const char *eventName, const char *data);
-        void handlePreviousAnimation(const char *eventName, const char *data);
+        void handleResetEvent(const char *eventName, const char *data);
+        void handleAnimationEvent(const char *eventName, const char *data);
+        void handlePowerEvent(const char *eventName, const char *data);
+        void handleToggleAudioEvent(const char *eventName, const char *data);
 };
 
 #endif
