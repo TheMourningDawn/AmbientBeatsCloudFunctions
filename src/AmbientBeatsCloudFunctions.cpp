@@ -25,10 +25,12 @@ AmbientBeatsCloudFunctions::AmbientBeatsCloudFunctions(LEDAnimations *animations
   Particle.function("power-off", std::bind(&AmbientBeatsCloudFunctions::powerOff, this, std::placeholders::_1));
   Particle.function("pause", std::bind(&AmbientBeatsCloudFunctions::pause, this, std::placeholders::_1));
 
-  Particle.variable("hue", &ledAnimations->hue, INT);
-  Particle.variable("brightness", &ledAnimations->brightness, INT);
-  Particle.variable("saturation", &ledAnimations->saturation, INT);
-  Particle.variable("animation", &ledAnimations->animation, INT);
+    Particle.variable("hue",&ledAnimations->hue, INT);
+    Particle.variable("brightness", &ledAnimations->brightness, INT);
+    Particle.variable("saturation", &ledAnimations->saturation, INT);
+    Particle.variable("animation", &ledAnimations->animation, INT);
+    Particle.variable("powered-on", ledAnimations->poweredOn);
+    Particle.variable("audio-on", ledAnimations->audioReactiveOn);
 
   Particle.subscribe("ANIMATION", std::bind(&AmbientBeatsCloudFunctions::handleAnimationEvent, this, std::placeholders::_1, std::placeholders::_2), MY_DEVICES);
   Particle.subscribe("RESET", std::bind(&AmbientBeatsCloudFunctions::handleResetEvent, this, std::placeholders::_1, std::placeholders::_2), MY_DEVICES);
