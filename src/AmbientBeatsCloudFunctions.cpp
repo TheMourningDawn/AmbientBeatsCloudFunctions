@@ -66,6 +66,8 @@ int AmbientBeatsCloudFunctions::power(String arg) {
         ledAnimations->poweredOn = true;
     } else if(arg == "OFF") {
         ledAnimations->poweredOn = false;
+        ledAnimations->clearAllLeds();
+        ledAnimations->show();
     } else {
         return -1;
     }
@@ -191,17 +193,17 @@ void AmbientBeatsCloudFunctions::handleResetEvent(const char *eventName, const c
 
 void AmbientBeatsCloudFunctions::handleAnimationEvent(const char *eventName, const char *data) {
     if (strcmp(eventName, "ANIMATION_NEXT") == 0) {
-        nextAnimation("");
+        changeAnimation("NEXT");
     } else if (strcmp(eventName, "ANIMATION_PREVIOUS") == 0) {
-        previousAnimation("");
+        changeAnimation("PREVIOUS");
     }
 }
 
 void AmbientBeatsCloudFunctions::handlePowerEvent(const char *eventName, const char *data) {
     if (strcmp(eventName, "POWER_ON") == 0) {
-        powerOn("");
+        power("ON");
     } else if (strcmp(eventName, "POWER_OFF") == 0) {
-        powerOff("");
+        power("OFF");
     }
 }
 
