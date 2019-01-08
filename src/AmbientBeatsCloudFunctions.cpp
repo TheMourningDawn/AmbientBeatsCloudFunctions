@@ -27,6 +27,7 @@ AmbientBeatsCloudFunctions::AmbientBeatsCloudFunctions(LEDAnimations *animations
     Particle.variable("hue", &ledAnimations->hue, INT);
     Particle.variable("brightness", &ledAnimations->brightness, INT);
     Particle.variable("saturation", &ledAnimations->saturation, INT);
+    Particle.variable("sensitivity", &ledAnimations->sensitivity, INT);
     Particle.variable("speed", &ledAnimations->speed, INT);
     Particle.variable("powered-on", ledAnimations->poweredOn);
     Particle.variable("animation", &ledAnimations->animation, INT);
