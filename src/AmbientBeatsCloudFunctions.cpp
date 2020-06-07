@@ -8,6 +8,7 @@ LEDAnimations *ledAnimations;
 AmbientBeatsCloudFunctions::AmbientBeatsCloudFunctions(LEDAnimations *animations) : ledAnimations(animations) {
     // Up to 15 cloud functions may be registered and each function name is limited to a maximum of 12 characters.
     Particle.function("toggle-audio-reactive", std::bind(&AmbientBeatsCloudFunctions::toggleAudioReactive, this, std::placeholders::_1));
+    Particle.function("toggle-color-loop", std::bind(&AmbientBeatsCloudFunctions::toggleColorLoop, this, std::placeholders::_1));
     Particle.function("change-animation", std::bind(&AmbientBeatsCloudFunctions::changeAnimation, this, std::placeholders::_1));
     Particle.function("cycle-frequency", std::bind(&AmbientBeatsCloudFunctions::nextFrequency, this, std::placeholders::_1));
 
@@ -18,6 +19,7 @@ AmbientBeatsCloudFunctions::AmbientBeatsCloudFunctions(LEDAnimations *animations
     Particle.function("set-sensitivity", std::bind(&AmbientBeatsCloudFunctions::setSensitivity, this, std::placeholders::_1));
     Particle.function("set-animation", std::bind(&AmbientBeatsCloudFunctions::setAnimation, this, std::placeholders::_1));
     Particle.function("set-speed", std::bind(&AmbientBeatsCloudFunctions::setSpeed, this, std::placeholders::_1));
+    Particle.function("set-color-loop-speed", std::bind(&AmbientBeatsCloudFunctions::setColorLoopSpeed, this, std::placeholders::_1));
 
     Particle.function("reset-device", std::bind(&AmbientBeatsCloudFunctions::resetDevice, this, std::placeholders::_1));
     Particle.function("enter-safe-mode", std::bind(&AmbientBeatsCloudFunctions::enterSafeMode, this, std::placeholders::_1));
@@ -29,7 +31,9 @@ AmbientBeatsCloudFunctions::AmbientBeatsCloudFunctions(LEDAnimations *animations
     Particle.variable("saturation", &ledAnimations->saturation, INT);
     Particle.variable("sensitivity", &ledAnimations->sensitivity, INT);
     Particle.variable("speed", &ledAnimations->speed, INT);
+    Particle.variable("color-loop-speed", &ledAnimations->colorLoopSpeed, INT);
     Particle.variable("powered-on", ledAnimations->poweredOn);
+    Particle.variable("color-loop-on", ledAnimations->colorLoopOn);
     Particle.variable("animation", &ledAnimations->animation, INT);
     Particle.variable("audio-on", ledAnimations->audioReactiveOn);
 
@@ -89,6 +93,10 @@ int AmbientBeatsCloudFunctions::pause(String arg) {
 
 int AmbientBeatsCloudFunctions::toggleAudioReactive(String arg) {
     return ledAnimations->toggleAudioReactive();
+}
+
+int AmbientBeatsCloudFunctions::toggleColorLoop(String arg) {
+    return ledAnimations->toggleColorLoop();
 }
 
 int AmbientBeatsCloudFunctions::changeAnimation(String nextOrPrevious) {
@@ -183,6 +191,12 @@ int AmbientBeatsCloudFunctions::setSpeed(String newSpeed) {
     ledAnimations->setSpeed(newSpeed.toInt());
 
     return ledAnimations->speed;
+}
+
+int AmbientBeatsCloudFunctions::setColorLoopSpeed(String newSpeed) {
+    ledAnimations->setColorLoopSpeed(newSpeed.toInt());
+
+    return ledAnimations->colorLoopSpeed;
 }
 
 /************************************

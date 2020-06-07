@@ -17,6 +17,7 @@ public:
     int pause(String arg);
 
     int toggleAudioReactive(String arg);
+    int toggleColorLoop(String arg);
     int changeAnimation(String nextOrPrevious);
     int nextFrequency(String frequency);
     int previousFrequency(String frequency);
@@ -27,6 +28,7 @@ public:
     int setBrightness(String brightnessString);
     int setSensitivity(String sensitivity);
     int setSpeed(String speed);
+    int setColorLoopSpeed(String speed);
     int setAnimation(String animationNumber);
 
     // Handlers for particle cloud events
